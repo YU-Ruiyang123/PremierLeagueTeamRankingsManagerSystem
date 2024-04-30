@@ -73,16 +73,16 @@ def insert():
 
 def save(lst):
     try:
-        stu_txt = open(filename, 'a', encoding='utf-8')
+        tem_txt = open(filename, 'a', encoding='utf-8')
     except:
-        stu_txt = open(filename, 'w', encoding='utf-8')
+        tem_txt = open(filename, 'w', encoding='utf-8')
     for item in lst:
-        stu_txt.write(str(item) + '\n')
-    stu_txt.close()
+        tem_txt.write(str(item) + '\n')
+    tem_txt.close()
 
 
 def search():
-    student_query = []
+    team_query = []
     while True:
         id = ''
         name = ''
@@ -101,13 +101,13 @@ def search():
                     d = dict(eval(item))
                     if id != '':
                         if d['id'] == id:
-                            student_query.append(d)
+                            team_query.append(d)
                     elif name != '':
                         if d['name'] == name:
-                            student_query.append(d)
-            show_query(student_query)
+                            team_query.append(d)
+            show_query(team_query)
             # 清空列表
-            student_query.clear()
+            team_query.clear()
             answer = input("是否继续查询？y/n")
             if answer == 'y':
                 continue
