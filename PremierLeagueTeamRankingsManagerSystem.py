@@ -1,6 +1,6 @@
 import os.path
 
-filename = 'students.txt'
+filename = 'teams.txt'
 
 def main():
     while True:
@@ -34,7 +34,7 @@ def main():
 def menu():
     print('==================学生信息管理系统==============')
     print('===============功能菜单==================')
-    print('\t\t\t1. 录入学生信息')
+    print('\t\t\t1. 录入球队信息')
     print('\t\t\t2. 查找学生信息')
     print('\t\t\t3. 删除学生信息')
     print('\t\t\t4. 修改学生信息')
@@ -46,32 +46,29 @@ def menu():
 
 
 def insert():
-    student_list = []
+    team_list = []
     while True:
-        id = input("请输入ID：")
-        if not id:
-            break
         name = input("请输入姓名：")
         if not name:
             break
         try:
-            english = int(input("请输入英语成绩："))
-            python = int(input("请输入python成绩："))
-            java = int(input("请输入Java成绩："))
+            trun = int(input("请输入球队轮次："))
+            winlose = list(input("请输入球队胜负："))
+            score = int(input("请输入球队积分："))
         except:
             print("输入无效，请重新输入")
         # 将录入的学生信息保存在字典中
-        student = {'id': id, 'name': name, 'english': english, 'python': python, 'java': java}
+        team = {'id': id, 'name': name, 'trun': trun, 'winlose': winlose, 'score': score}
         # 将学生信息添加到列表中
-        student_list.append(student)
+        team_list.append(team)
         answer = input("是否继续添加y/n?")
         if answer == 'y':
             continue
         else:
             break
     # 调用save函数保存信息
-    save(student_list)
-    print("学生信息保存成功")
+    save(team_list)
+    print("球队信息保存成功")
 
 
 def save(lst):
