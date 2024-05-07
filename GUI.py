@@ -1,33 +1,33 @@
 import tkinter as tk
+from tkinter import ttk
 
 
-def on_closing():
-    root.destroy()  # 当点击关闭按钮时，调用这个函数来关闭窗口
+class TeamManagerApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("球队管理")
+        self.geometry("1000x500")
 
-def on_button_click():
-        user_input = entry.get()  # 获取输入框的内容
-        label.config(text=f"你输入了: {user_input}")
+        # 创建球队列表
+        self.teams = [("球队A", 0, 0, 0), ("球队B", 0, 0, 0), ("球队C", 0, 0, 0)]
+
+        # 创建树形视图展示球队信息
+        self.tree = ttk.Treeview(self, columns=("索引", "名称", "轮次", "胜", "负", "积分"), show="headings")
+        self.tree.heading("索引", text="索引")
+        self.tree.heading("名称", text="球队名称")
+        self.tree.heading("轮次", text="轮次")
+        self.tree.heading("胜", text="胜")
+        self.tree.heading("负", text="负")
+        self.tree.heading("积分", text="积分")
+
+        # 填充树形视图
+        for i, (name, round_, wins, losses) in enumerate(self.teams):
+            self.tree.insert("", "end", iid=str(i), values=(name, round_, wins, losses, (wins * 3) + (losses * 0)))
+
+        self.tree.pack(fill="both", expand=True, padx=10, pady=10)
 
 
-root = tk.Tk()
-root.title("Tkinter GUI 示例")  # 设置窗口标题
-root.geometry("1000x800")  # 设置窗口大小
 
-label = tk.Label(root, text="Hello, Tkinter!")
-label.pack(pady=20)  # 使用pack布局，并添加一些垂直填充
-
-button = tk.Button(root, text="退出", command=on_closing)  # 创建一个按钮，并绑定退出函数
-button.pack(pady=10)  # 使用pack布局，并添加一些垂直填充
-
-root.protocol("WM_DELETE_WINDOW", on_closing)  # 当点击窗口的关闭按钮时，调用on_closing函数
-
-label = tk.Label(root, text="请输入内容:")
-label.pack(pady=10)
-
-entry = tk.Entry(root)
-entry.pack(pady=10)
-
-button = tk.Button(root, text="提交", command=on_button_click)
-button.pack(pady=10)
-
-root.mainloop()
+if __name__ == "__main__":
+    app = TeamManagerApp()
+    app.mainloop()

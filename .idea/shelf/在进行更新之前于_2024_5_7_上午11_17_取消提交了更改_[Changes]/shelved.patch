@@ -1,0 +1,99 @@
+Index: GUI.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import tkinter as tk\r\n\r\n\r\ndef on_closing():\r\n    root.destroy()  # 当点击关闭按钮时，调用这个函数来关闭窗口\r\n\r\ndef on_button_click():\r\n        user_input = entry.get()  # 获取输入框的内容\r\n        label.config(text=f\"你输入了: {user_input}\")\r\n\r\n\r\nroot = tk.Tk()\r\nroot.title(\"Tkinter GUI 示例\")  # 设置窗口标题\r\nroot.geometry(\"1000x800\")  # 设置窗口大小\r\n\r\nlabel = tk.Label(root, text=\"Hello, Tkinter!\")\r\nlabel.pack(pady=20)  # 使用pack布局，并添加一些垂直填充\r\n\r\nbutton = tk.Button(root, text=\"退出\", command=on_closing)  # 创建一个按钮，并绑定退出函数\r\nbutton.pack(pady=10)  # 使用pack布局，并添加一些垂直填充\r\n\r\nroot.protocol(\"WM_DELETE_WINDOW\", on_closing)  # 当点击窗口的关闭按钮时，调用on_closing函数\r\n\r\nlabel = tk.Label(root, text=\"请输入内容:\")\r\nlabel.pack(pady=10)\r\n\r\nentry = tk.Entry(root)\r\nentry.pack(pady=10)\r\n\r\nbutton = tk.Button(root, text=\"提交\", command=on_button_click)\r\nbutton.pack(pady=10)\r\n\r\nroot.mainloop()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/GUI.py b/GUI.py
+--- a/GUI.py	(revision ca34595b3016f84aa7daa5dfb8868d8758314648)
++++ b/GUI.py	(date 1715051489436)
+@@ -1,33 +1,32 @@
+ import tkinter as tk
+-
++from tkinter import ttk
+ 
+-def on_closing():
+-    root.destroy()  # 当点击关闭按钮时，调用这个函数来关闭窗口
+ 
+-def on_button_click():
+-        user_input = entry.get()  # 获取输入框的内容
+-        label.config(text=f"你输入了: {user_input}")
++class TeamManagerApp(tk.Tk):
++    def __init__(self):
++        super().__init__()
++        self.title("球队管理")
++        self.geometry("1000x500")
+ 
++        # 创建球队列表
++        self.teams = [("球队A", 0, 0, 0), ("球队B", 0, 0, 0), ("球队C", 0, 0, 0)]
+ 
+-root = tk.Tk()
+-root.title("Tkinter GUI 示例")  # 设置窗口标题
+-root.geometry("1000x800")  # 设置窗口大小
++        # 创建树形视图展示球队信息
++        self.tree = ttk.Treeview(self, columns=("名称", "轮次", "胜", "负", "积分"), show="headings")
++        self.tree.heading("名称", text="球队名称")
++        self.tree.heading("轮次", text="轮次")
++        self.tree.heading("胜", text="胜")
++        self.tree.heading("负", text="负")
++        self.tree.heading("积分", text="积分")
+ 
+-label = tk.Label(root, text="Hello, Tkinter!")
+-label.pack(pady=20)  # 使用pack布局，并添加一些垂直填充
++        # 填充树形视图
++        for i, (name, round_, wins, losses) in enumerate(self.teams):
++            self.tree.insert("", "end", iid=str(i), values=(name, round_, wins, losses, (wins * 3) + (losses * 0)))
+ 
+-button = tk.Button(root, text="退出", command=on_closing)  # 创建一个按钮，并绑定退出函数
+-button.pack(pady=10)  # 使用pack布局，并添加一些垂直填充
++        self.tree.pack(fill="both", expand=True, padx=10, pady=10)
+ 
+-root.protocol("WM_DELETE_WINDOW", on_closing)  # 当点击窗口的关闭按钮时，调用on_closing函数
+ 
+-label = tk.Label(root, text="请输入内容:")
+-label.pack(pady=10)
+ 
+-entry = tk.Entry(root)
+-entry.pack(pady=10)
+-
+-button = tk.Button(root, text="提交", command=on_button_click)
+-button.pack(pady=10)
+-
+-root.mainloop()
+\ No newline at end of file
++if __name__ == "__main__":
++    app = TeamManagerApp()
++    app.mainloop()
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"e2e85a88-9fd5-418a-8027-aa9500e8e995\" name=\"Changes\" comment=\"Changes\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;XUHaoyang949&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/YU-Ruiyang123/PremierLeagueTeamRankingsManagerSystem.git&quot;,\r\n    &quot;accountId&quot;: &quot;822890aa-3625-462a-ab93-6fe18be5cfc2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 5\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2fAHDOm7RdbVn4u9A2l1uE3ZHlI\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"settings.editor.selected.configurable\": \"org.jetbrains.plugins.github.ui.GithubSettingsConfigurable\"\r\n  }\r\n}]]></component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"e2e85a88-9fd5-418a-8027-aa9500e8e995\" name=\"Changes\" comment=\"\" />\r\n      <created>1713236843964</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1713236843964</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Changes\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Changes\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision ca34595b3016f84aa7daa5dfb8868d8758314648)
++++ b/.idea/workspace.xml	(date 1715049719911)
+@@ -4,7 +4,10 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="e2e85a88-9fd5-418a-8027-aa9500e8e995" name="Changes" comment="Changes" />
++    <list default="true" id="e2e85a88-9fd5-418a-8027-aa9500e8e995" name="Changes" comment="Changes">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI.py" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -46,6 +49,8 @@
+   </component>
+   <component name="PropertiesComponent"><![CDATA[{
+   "keyToString": {
++    "Python.GUI.executor": "Run",
++    "Python.PremierLeagueTeamRankingsManagerSystem.executor": "Run",
+     "RunOnceActivity.OpenProjectViewOnStart": "true",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "git-widget-placeholder": "main",
