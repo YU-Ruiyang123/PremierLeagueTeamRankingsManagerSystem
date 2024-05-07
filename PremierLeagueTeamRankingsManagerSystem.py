@@ -53,12 +53,11 @@ def insert():
             break
         try:
             trun = int(input("请输入球队轮次："))
-            winlose = list(input("请输入球队胜负："))
+            winlose = int(input("请输入球队胜负："))
             score = int(input("请输入球队积分："))
         except:
             print("输入无效，请重新输入")
-        # 将录入的学生信息保存在字典中
-        team = {'id': id, 'name': name, 'trun': trun, 'winlose': winlose, 'score': score}
+        team = {'name': name, 'trun': trun, 'winlose': winlose, 'score': score}
         # 将学生信息添加到列表中
         team_list.append(team)
         answer = input("是否继续添加y/n?")
@@ -84,25 +83,14 @@ def save(lst):
 def search():
     team_query = []
     while True:
-        id = ''
         name = ''
         if os.path.exists(filename):
-            mode = input("按ID查找请按1，按姓名查找请按2：")
-            if mode == '1':
-                id = input("请输入学生ID：")
-            elif mode == '2':
-                name = input("请输入学生新明：")
-            else:
-                print("输入有误，请重新输入")
-                search()
+            name = input("请输入球队名字：")
             with open(filename, 'r', encoding='utf-8') as file:
-                student = file.readlines()
-                for item in student:
+                team = file.readlines()
+                for item in team:
                     d = dict(eval(item))
-                    if id != '':
-                        if d['id'] == id:
-                            team_query.append(d)
-                    elif name != '':
+                    if name != '':
                         if d['name'] == name:
                             team_query.append(d)
             show_query(team_query)
@@ -114,7 +102,7 @@ def search():
             else:
                 break
         else:
-            print("无学生信息")
+            print("无球队信息")
             return
 
 
@@ -124,26 +112,21 @@ def show_query(lst):
         return
     # 定义标题显示格式
     format_title = '{:^6}\t{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^8}'
-    print(format_title.format('ID', '姓名', '英语成绩', 'python成绩', 'Java成绩', '总成绩'))
+    print(format_title.format('姓名', '球队轮次', '球队胜负', '球队积分'))
     # 定义内容显示格式
     format_data = '{:^6}\t{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^8}'
     for item in lst:
-        print(format_data.format(item.get('id'),
-                                 item.get('name'),
-                                 item.get('english'),
-                                 item.get('english'),
-                                 item.get('java'),
-                                 int(item.get('english')) + int(item.get('english')) + int(item.get('java'))
-                                 ))
-
-
+        print(format_data.format(item.get('name'),
+                                 item.get('trun'),
+                                 item.get('winlose'),
+                                 item.get('score')))
 def delete():
     while True:
-        student_id = input("请输入删除学生的ID：")
-        if student_id != '':
+        team_name = input("请输入删除球队的name：")
+        if team_name != '':
             if os.path.exists(filename):
                 with open(filename, 'r', encoding='utf-8') as file:
-                    student_old = file.readlines()
+                    team_old = file.readlines()
             else:
                 student_old = []
             flag = False
@@ -153,16 +136,16 @@ def delete():
                     d = {}
                     for item in student_old:
                         d = dict(eval(item))  # 将字符串转换为字典
-                        if d['id'] != student_id:
+                        if d['name'] != team_name:
                             wfile.write(str(d) + '\n')
                         else:
                             flag = True
                     if flag:
-                        print(f'id为{student_id}的学生信息已被删除')
+                        print(f'id为{team_name}的学生信息已被删除')
                     else:
-                        print(f'没有找到学生ID为{student_id}的学生')
+                        print(f'没有找到学生ID为{team_name}的学生')
             else:
-                print("无学生信息")
+                print("无球队信息")
                 break
             show()
             answer = input("是否继续删除？y/n")
@@ -176,22 +159,22 @@ def modify():
     show()
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf-8') as file:
-            student_old = file.readlines()
+            team_old = file.readlines()
     else:
         return
-    student_id = input("请输入修改学生的ID：")
+    team_name = input("请输入修改球队的name：")
     with open(filename, 'w', encoding='utf-8') as wfile:
-        for item in student_old:
+        for item in team_name:
             d = {}
             d = dict(eval(item))
-            if d['id'] == student_id:
-                print("已经找到学生信息，请修改相关信息")
+            if d['id'] == team_name:
+                print("已经找到球队信息，请修改相关信息")
                 while True:
                     try:
                         d['name'] = input("请输入姓名")
-                        d['english'] = input("请输入英语成绩")
-                        d['python'] = input("请输入python成绩")
-                        d['java'] = input("请输入Java成绩")
+                        d['trun'] = input("请输入球队轮次")
+                        d['winlose'] = input("请输入球队胜负")
+                        d['score'] = input("请输入球队积分")
                     except:
                         print("输入有误，请重新输入")
                     else:
@@ -200,74 +183,37 @@ def modify():
                     print("修改成功")
             else:
                 wfile.write(str(d) + '\n')
-            answer = input("是否继续修改其他学生信息？y/n")
+            answer = input("是否继续修改其他球队信息？y/n")
             if answer == 'y':
                 modify()
             else:
                 return
 
-
-def sort():
-    show()
-    if os.path.exists(filename):
-        with open(filename, 'r', encoding='utf-8') as file:
-            students = file.readlines()
-        students_new = []
-        for item in students:
-            d = dict(eval(item))
-            students_new.append(d)
-    else:
-        return
-
-    # 排序方式
-    asc_or_desc = input("请选择升序 0 还是降序 1？")
-    if asc_or_desc == '0':
-        asc_or_desc_bool = False
-    elif asc_or_desc == '1':
-        asc_or_desc_bool = True
-    else:
-        print("输入有误，请重新输入")
-        sort()
-    mode = input("请选择排序方式(1.英语 2.python 3.Java 4.总成绩)：")
-    if mode == '1':
-        students_new.sort(key=lambda x: int(x['english']), reverse=asc_or_desc_bool)
-        # x 代表列表students_new中的项
-    elif mode == '2':
-        students_new.sort(key=lambda x: int(x['python']), reverse=asc_or_desc_bool)
-    elif mode == '3':
-        students_new.sort(key=lambda x: int(x['java']), reverse=asc_or_desc_bool)
-    elif mode == '4':
-        students_new.sort(key=lambda x: int(x['english']) + int(x['python']) + int(x['java']), reverse=asc_or_desc_bool)
-    else:
-        print("输入有误，请重新输入")
-    show_query(students_new)
-
-
 def total():
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf-8') as file:
-            students = file.readlines()
-            if students:
-                print(f"总共有{len(students)}名学生")
+            teams = file.readlines()
+            if teams:
+                print(f"总共有{len(teams)}个球队")
             else:
-                print("无学生信息")
+                print("无球队信息")
     else:
-        print("无学生信息")
+        print("无球队信息")
 
 
 def show():
-    student_query = []
+    team_query = []
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf-8') as file:
-            student = file.readlines()
-            for item in student:
+            team = file.readlines()
+            for item in team:
                 d = dict(eval(item))
-                student_query.append(d)
-        show_query(student_query)
+                team_query.append(d)
+        show_query(team_query)
         # 清空列表
-        student_query.clear()
+        team_query.clear()
     else:
-        print("无学生信息")
+        print("无球队信息")
         return
 
 
