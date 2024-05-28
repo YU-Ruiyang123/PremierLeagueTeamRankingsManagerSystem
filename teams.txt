@@ -1,0 +1,1 @@
+{'name': 'asenal', 'trun': 33, 'winlose': 9, 'score': 27}

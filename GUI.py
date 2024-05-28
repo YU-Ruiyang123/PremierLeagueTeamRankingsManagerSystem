@@ -12,8 +12,7 @@ class TeamManagerApp(tk.Tk):
         self.teams = [("球队A", 0, 0, 0), ("球队B", 0, 0, 0), ("球队C", 0, 0, 0)]
 
         # 创建树形视图展示球队信息
-        self.tree = ttk.Treeview(self, columns=("索引", "名称", "轮次", "胜", "负", "积分"), show="headings")
-        self.tree.heading("索引", text="索引")
+        self.tree = ttk.Treeview(self, columns=( "名称", "轮次", "胜", "负", "积分"), show="headings")
         self.tree.heading("名称", text="球队名称")
         self.tree.heading("轮次", text="轮次")
         self.tree.heading("胜", text="胜")
